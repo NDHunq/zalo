@@ -1,9 +1,13 @@
 from flask import Flask, request, jsonify, render_template
 import requests
+import logging
 
 app = Flask(__name__)
 
 ACCESS_TOKEN = "lmUHJgJW2r2_2fj8f-y2LRe9cK-lz7iWsbFdISJpFrQ0I_HFsFO7FQ0MxqdwatHMXIgmAS6qL7Ax0hO0-evfTviSbs-6eMOfwJRvJkcz5L2ZMCOOmVWeP8LOiYMRocewvbUYUQcmVG7l29r3iPbn7Ey9kMUicLKPnNwxOO_rV3ZKSgKXp9TrDRCyc7pKtW0-etJSKFJUHZcLEDX0-gKN38D2o6hR-HS_i6tuPkdOPWUWJPLusjPn5xn2b5sy_5avf7cPKzhaKpkKGxXvY_zG7kTxltU6xouTv5-qS_Z2TYoHHPr6oQTk6eiry4FFloyjXmR7JUYpEIkJ9DzUqSy_4OHzvKNcn0eyX4RsT_FtDZJkLkvHYy4Z4Ez3irEkqLuarK6INx_-QnZ1QOb7ZTbcNVfSZZQDt7vwHotJgIsc-WbQ"  # Thay bằng Access Token của bạn
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
 
 def send_message(user_id, message):
     """Gửi tin nhắn văn bản đến người dùng Zalo"""
@@ -16,15 +20,15 @@ def send_message(user_id, message):
         "recipient": {"user_id": user_id},
         "message": {"text": message}
     }
-    print(f"Sending message to {user_id}: {message}")
+    logging.debug(f"Sending message to {user_id}: {message}")
     response = requests.post(url, json=data, headers=headers)
-    print(f"Response: {response.json()}")
+    logging.debug(f"Response: {response.json()}")
     return response.json()
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.json
-    print(f"Received webhook data: {data}")
+    logging.debug(f"Received webhook data: {data}")
     if data and "sender" in data and "message" in data:
         user_id = data["sender"]["id"]
         message_text = data["message"]["text"]
