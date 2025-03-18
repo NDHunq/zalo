@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 def send_message(user_id, message):
     """Gửi tin nhắn văn bản đến người dùng Zalo"""
-    url = "https://openapi.zalo.me/v2.0/oa/message"
+    url = "https://openapi.zalo.me/v3.0/oa/message/cs"
     headers = {
         "Content-Type": "application/json",
         "access_token": ACCESS_TOKEN
