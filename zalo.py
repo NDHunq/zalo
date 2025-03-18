@@ -16,12 +16,15 @@ def send_message(user_id, message):
         "recipient": {"user_id": user_id},
         "message": {"text": message}
     }
+    print(f"Sending message to {user_id}: {message}")
     response = requests.post(url, json=data, headers=headers)
+    print(f"Response: {response.json()}")
     return response.json()
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.json
+    print(f"Received webhook data: {data}")
     if data and "sender" in data and "message" in data:
         user_id = data["sender"]["id"]
         message_text = data["message"]["text"]
